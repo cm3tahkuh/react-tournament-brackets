@@ -216,6 +216,8 @@ export type BracketLeaderboardProps = CommonTreeProps & {
 
 export type SingleElimLeaderboardProps = BracketLeaderboardProps & {
   matches: Match[];
+  showThirdPlace?: boolean;
+  showWinnersColumn?: boolean;
 };
 
 export type DoubleElimLeaderboardProps = BracketLeaderboardProps & {

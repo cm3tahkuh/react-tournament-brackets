@@ -24,8 +24,8 @@ export const defaultStyle: Options = {
     homeVisitorSpread: 0.5,
   },
   horizontalOffset: 13,
-  wonBywalkOverText: 'WO',
-  lostByNoShowText: 'NS',
+  wonBywalkOverText: 'Тех.победа',
+  lostByNoShowText: 'Неявка',
 };
 
 export const getCalculatedStyles = (style = defaultStyle): ComputedOptions => {
