@@ -16,7 +16,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <!-- <a href="https://github.com/g-loot/react-tournament-brackets">
+  <!-- <a href="https://github.com/cm3tahkuh/react-tournament-brackets">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a> -->
 
@@ -30,9 +30,9 @@
     <br />
     <a href="https://sleepy-kare-d8538d.netlify.app/?path=/story/components-bracket--bracket">View Live Demo</a>
     ·
-    <a href="https://github.com/g-loot/react-tournament-brackets/issues">Report Bug</a>
+    <a href="https://github.com/cm3tahkuh/react-tournament-brackets/issues">Report Bug</a>
     ·
-    <a href="https://github.com/g-loot/react-tournament-brackets/issues">Request Feature</a>
+    <a href="https://github.com/cm3tahkuh/react-tournament-brackets/issues">Request Feature</a>
   </p>
 </p>
 
@@ -88,16 +88,16 @@ You only need to have react installed in your project to use this project.
 **Note:** default browser css is reset using the [minireset.css package](https://github.com/jgthms/minireset.css/) in the storybook demos. To fully control what the match component looks like you can build and supply your own view component for it 
 ## Getting Started
 ### Installation
-  This project is hosted on the public npm registry, here's the [link to the npm page](https://www.npmjs.com/package/@g-loot/react-tournament-brackets)
+  This project is hosted on the public npm registry, here's the [link to the npm page](https://www.npmjs.com/package/@cm3tahkuh/react-tournament-brackets)
   ```sh
-  npm install @g-loot/react-tournament-brackets
+  npm install @cm3tahkuh/react-tournament-brackets
   ```
 
 <!-- USAGE EXAMPLES -->
 ## Basic Usage
 
 ### Basics of the library
-`import { SingleEliminationBracket, DoubleEliminationBracket, Match, MATCH_STATES, SVGViewer } from '@g-loot/react-tournament-brackets';`
+`import { SingleEliminationBracket, DoubleEliminationBracket, Match, MATCH_STATES, SVGViewer } from '@cm3tahkuh/react-tournament-brackets';`
 | Component     | Description   |
 | ------------- |:-------------|
 | SingleEliminationBracket | Component for displaying single elimination bracket |
@@ -109,7 +109,7 @@ You only need to have react installed in your project to use this project.
 ### Using the components
 This component generates an SVG of all your bracket matches, you can use the supplied optional component `<SVGViewer />` like in the following example to wrap the SVG in a fixed size window with panning and zooming functionality, Note that you're also free to come up with your own solution for allowing the user to navigate giant brackets with ease.
 ```js
-import { SingleEliminationBracket, DoubleEliminationBracket, Match, SVGViewer } from '@g-loot/react-tournament-brackets';
+import { SingleEliminationBracket, DoubleEliminationBracket, Match, SVGViewer } from '@cm3tahkuh/react-tournament-brackets';
 export const DoubleElimination = () => (
   <DoubleEliminationBracket
     matches={matches}
@@ -159,7 +159,7 @@ export const SingleEliminationWithThirdPlace = () => (
 
 - If you want the `SVGViewer` to fit it's container you will need some sort of hook to achieve that, like [useWindowSize()](https://usehooks.com/useWindowSize/), [useComponentSize](https://github.com/rehooks/component-size) or your own custom solution
 ```js
-import { DoubleEliminationBracket, Match, SVGViewer } from '@g-loot/react-tournament-brackets';
+import { DoubleEliminationBracket, Match, SVGViewer } from '@cm3tahkuh/react-tournament-brackets';
 
 export const DoubleElimination = () => {
   const [width, height] = useWindowSize();
@@ -328,7 +328,7 @@ To enable the third place match and winners column, you need to:
   ]
 }
 ```
-- Double Eliminations `matches` prop structure with double finals, Keep the same structure and add a nextMatchId + nextLooserMatchId pointing to a new match in the same bracket (the finals can be in upper or in lower bracket) _For more examples of valid double finals data, check out the [mock data folder](https://github.com/g-loot/react-tournament-brackets/tree/master/src/mock-data) specifically  [data-double-last-game-lower.ts](https://github.com/g-loot/react-tournament-brackets/tree/master/src/mock-data/data-double-last-game-lower.ts) and [data-double-last-game-upper-double-playoffs.ts](https://github.com/g-loot/react-tournament-brackets/tree/master/src/mock-data/data-double-last-game-upper-double-playoffs.ts) _
+- Double Eliminations `matches` prop structure with double finals, Keep the same structure and add a nextMatchId + nextLooserMatchId pointing to a new match in the same bracket (the finals can be in upper or in lower bracket) _For more examples of valid double finals data, check out the [mock data folder](https://github.com/cm3tahkuh/react-tournament-brackets/tree/master/src/mock-data) specifically  [data-double-last-game-lower.ts](https://github.com/cm3tahkuh/react-tournament-brackets/tree/master/src/mock-data/data-double-last-game-lower.ts) and [data-double-last-game-upper-double-playoffs.ts](https://github.com/cm3tahkuh/react-tournament-brackets/tree/master/src/mock-data/data-double-last-game-upper-double-playoffs.ts) _
 ```json
 {
   [upper|lower]: [
@@ -369,7 +369,7 @@ To enable the third place match and winners column, you need to:
 ```
 - Match / Participant States are defined in the exported constant `MATCH_STATES`
 ```js
-import { MATCH_STATES } from '@g-loot/react-tournament-brackets';
+import { MATCH_STATES } from '@cm3tahkuh/react-tournament-brackets';
 console.log(MATCH_STATES);
 // {
 //   PLAYED: 'PLAYED',
@@ -382,7 +382,7 @@ console.log(MATCH_STATES);
 
 ```
 
-_For more examples of accepted data, check out the [mock data folder](https://github.com/g-loot/react-tournament-brackets/tree/master/src/mock-data)_
+_For more examples of accepted data, check out the [mock data folder](https://github.com/cm3tahkuh/react-tournament-brackets/tree/master/src/mock-data)_
 
 
 ## Theming and Styling
@@ -400,7 +400,7 @@ The library includes several pre-built themes:
 #### Using Pre-built Themes
 If you want to use a pre-built theme like ScreenshotTheme, you can import it from the library (if exported) or create it using `createTheme`:
 ```js
-import { SingleEliminationBracket, Match, SVGViewer, createTheme } from '@g-loot/react-tournament-brackets';
+import { SingleEliminationBracket, Match, SVGViewer, createTheme } from '@cm3tahkuh/react-tournament-brackets';
 
 const ScreenshotTheme = createTheme({
   textColor: { main: '#0F172A', highlighted: '#0B3A75', dark: '#1E293B' },
@@ -451,7 +451,7 @@ A few notes:
 - Some colors like the roundHeaders, and connectors aren't tied to the theme yet, you'll need to style those through the `options` prop manually for now, In the very near future they will be tied to the theme as well!
 #### Full Example of custom theming:
 ```js
-import { SingleEliminationBracket, Match, SVGViewer, createTheme } from '@g-loot/react-tournament-brackets';
+import { SingleEliminationBracket, Match, SVGViewer, createTheme } from '@cm3tahkuh/react-tournament-brackets';
 
 const WhiteTheme = createTheme({
   textColor: { main: '#000000', highlighted: '#07090D', dark: '#3E414D' },
@@ -509,7 +509,7 @@ export const WhiteThemeBracket = () => {
 
 #### Basic example of custom match component
 ```js
-import { SingleEliminationBracket, SVGViewer } from '@g-loot/react-tournament-brackets';
+import { SingleEliminationBracket, SVGViewer } from '@cm3tahkuh/react-tournament-brackets';
 
 export const CustomMatchBracket = () => {
   const [width, height] = useWindowSize();
@@ -624,14 +624,14 @@ Contributions are what make the open source community such an amazing place to b
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/g-loot/react-tournament-brackets.svg?style=for-the-badge
-[contributors-url]: https://github.com/g-loot/react-tournament-brackets/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/g-loot/react-tournament-brackets.svg?style=for-the-badge
-[forks-url]: https://github.com/g-loot/react-tournament-brackets/network/members
-[stars-shield]: https://img.shields.io/github/stars/g-loot/react-tournament-brackets.svg?style=for-the-badge
-[stars-url]: https://github.com/g-loot/react-tournament-brackets/stargazers
-[issues-shield]: https://img.shields.io/github/issues/g-loot/react-tournament-brackets.svg?style=for-the-badge
-[issues-url]: https://github.com/g-loot/react-tournament-brackets/issues
+[contributors-shield]: https://img.shields.io/github/contributors/cm3tahkuh/react-tournament-brackets.svg?style=for-the-badge
+[contributors-url]: https://github.com/cm3tahkuh/react-tournament-brackets/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/cm3tahkuh/react-tournament-brackets.svg?style=for-the-badge
+[forks-url]: https://github.com/cm3tahkuh/react-tournament-brackets/network/members
+[stars-shield]: https://img.shields.io/github/stars/cm3tahkuh/react-tournament-brackets.svg?style=for-the-badge
+[stars-url]: https://github.com/cm3tahkuh/react-tournament-brackets/stargazers
+[issues-shield]: https://img.shields.io/github/issues/cm3tahkuh/react-tournament-brackets.svg?style=for-the-badge
+[issues-url]: https://github.com/cm3tahkuh/react-tournament-brackets/issues
 [single-bracket-screenshot]: images/screenshot_single.png
 [double-bracket-screenshot]: images/screenshot_double.png
 [third-place-screenshot]: images/screenshot_third_place.png
