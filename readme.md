@@ -70,6 +70,12 @@
 [![Single elimination screenshot][single-bracket-screenshot]][single-demo-url]
 - Screenshot Of double elimination bracket out of the box
 [![Double elimination screenshot][double-bracket-screenshot]][double-demo-url]
+- Screenshot Of single elimination bracket with third place match
+[![Third place match screenshot][third-place-screenshot]][single-demo-url]
+- Screenshot Of single elimination bracket with winners column (1st, 2nd, 3rd place)
+[![Winners column screenshot][winners-column-screenshot]][single-demo-url]
+- Screenshot Theme example
+[![Screenshot theme][screenshot-theme-screenshot]][single-demo-url]
 
 I was scouring the world wide web for a good component library for visualizing single elimination brackets or double elimination brackets but most of them had complicated data structures or didn't allow for easy styling, and so I had to build my own, and decided to share it with the world.
 ### Built With
@@ -119,6 +125,29 @@ export const SingleElimination = () => (
   <SingleEliminationBracket
     matches={matches}
     matchComponent={Match}
+    svgWrapper={({ children, ...props }) => (
+      <SVGViewer width={500} height={500} {...props}>
+        {children}
+      </SVGViewer>
+    )}
+  />
+);
+```
+
+- Single elimination brackets now support displaying a third place match and a winners column showing final placements (1st, 2nd, 3rd place)
+
+[![Third place match][third-place-screenshot]][single-demo-url]
+[![Winners column][winners-column-screenshot]][single-demo-url]
+
+```js
+import { SingleEliminationBracket, Match, SVGViewer } from '@g-loot/react-tournament-brackets';
+
+export const SingleEliminationWithThirdPlace = () => (
+  <SingleEliminationBracket
+    matches={matches}
+    matchComponent={Match}
+    showThirdPlace={true}      // Display third place match below the final
+    showWinnersColumn={true}   // Display winners column (1st, 2nd, 3rd place) to the right
     svgWrapper={({ children, ...props }) => (
       <SVGViewer width={500} height={500} {...props}>
         {children}
@@ -184,6 +213,59 @@ _For more examples, please refer to the [Storybook][demo-url]_
 ]
 
 ```
+- Single Eliminations with Third Place Match and Winners Column
+To enable the third place match and winners column, you need to:
+  1. Add a match with `isThirdPlace: true` or set `tournamentRoundText` to match "third" or "3rd place"
+  2. Set `showThirdPlace={true}` and `showWinnersColumn={true}` props on `SingleEliminationBracket`
+```json
+[
+  ...,
+  {
+    "id": 3,
+    "name": "Grand Final",
+    "nextMatchId": null,
+    "tournamentRoundText": "Final",
+    "state": "DONE",
+    "participants": [
+      {
+        "id": "team-a",
+        "name": "Team A",
+        "isWinner": true,
+        "resultText": "3"
+      },
+      {
+        "id": "team-b",
+        "name": "Team B",
+        "isWinner": false,
+        "resultText": "2"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Third Place",
+    "nextMatchId": null,
+    "tournamentRoundText": "3rd Place",
+    "state": "DONE",
+    "isThirdPlace": true,
+    "participants": [
+      {
+        "id": "team-c",
+        "name": "Team C",
+        "isWinner": true,
+        "resultText": "2"
+      },
+      {
+        "id": "team-d",
+        "name": "Team D",
+        "isWinner": false,
+        "resultText": "1"
+      }
+    ]
+  }
+]
+```
+
 - Double Eliminations `matches` prop structure
 ```json
 {
@@ -305,6 +387,66 @@ _For more examples of accepted data, check out the [mock data folder](https://gi
 
 ## Theming and Styling
 This component's default theme is the dark theme in the screenshot, you can use the function `createTheme` which is exported from the library to create a theme and then pass it to either single or double bracket on the `theme` prop
+
+### Available Themes
+The library includes several pre-built themes:
+- **Default Theme**: Dark theme with blue accents (default)
+- **White Theme**: Clean white theme with neutral colors
+- **Gloot Theme**: Purple-themed dark theme
+- **Screenshot Theme**: Light blue theme with screenshot-like appearance, perfect for documentation and presentations
+
+[![Screenshot Theme][screenshot-theme-screenshot]][single-demo-url]
+
+#### Using Pre-built Themes
+If you want to use a pre-built theme like ScreenshotTheme, you can import it from the library (if exported) or create it using `createTheme`:
+```js
+import { SingleEliminationBracket, Match, SVGViewer, createTheme } from '@g-loot/react-tournament-brackets';
+
+const ScreenshotTheme = createTheme({
+  textColor: { main: '#0F172A', highlighted: '#0B3A75', dark: '#1E293B' },
+  matchBackground: { wonColor: '#E6F0FF', lostColor: '#F0F6FF' },
+  score: {
+    background: { wonColor: '#D4E6FF', lostColor: '#D4E6FF' },
+    text: { highlightedWonColor: '#0B3A75', highlightedLostColor: '#0B3A75' },
+  },
+  border: { color: '#B7C5F3', highlightedColor: '#334155' },
+  roundHeader: { backgroundColor: '#CFE3FF', fontColor: '#0F172A' },
+  roundHeaders: { background: '#CFE3FF' },
+  connectorColor: '#334155',
+  connectorColorHighlight: '#1F2937',
+  svgBackground: '#E6F0FF',
+});
+
+export const ScreenshotThemeBracket = () => (
+  <SingleEliminationBracket
+    matches={matches}
+    matchComponent={Match}
+    theme={ScreenshotTheme}
+    options={{
+      style: {
+        roundHeader: {
+          backgroundColor: ScreenshotTheme.roundHeader.backgroundColor,
+          fontColor: ScreenshotTheme.roundHeader.fontColor,
+        },
+        connectorColor: ScreenshotTheme.connectorColor,
+        connectorColorHighlight: ScreenshotTheme.connectorColorHighlight,
+      },
+    }}
+    svgWrapper={({ children, ...props }) => (
+      <SVGViewer
+        background={ScreenshotTheme.svgBackground}
+        SVGBackground={ScreenshotTheme.svgBackground}
+        width={500}
+        height={500}
+        {...props}
+      >
+        {children}
+      </SVGViewer>
+    )}
+  />
+);
+```
+
 A few notes: 
 - Some colors like the roundHeaders, and connectors aren't tied to the theme yet, you'll need to style those through the `options` prop manually for now, In the very near future they will be tied to the theme as well!
 #### Full Example of custom theming:
@@ -492,5 +634,9 @@ Contributions are what make the open source community such an amazing place to b
 [issues-url]: https://github.com/g-loot/react-tournament-brackets/issues
 [single-bracket-screenshot]: images/screenshot_single.png
 [double-bracket-screenshot]: images/screenshot_double.png
+[third-place-screenshot]: images/screenshot_third_place.png
+[winners-column-screenshot]: images/screenshot_winners_column.png
+[screenshot-theme-screenshot]: images/screenshot_theme.png
+
 [single-demo-url]: https://sleepy-kare-d8538d.netlify.app/?path=/story/components-bracket--bracket
 [double-demo-url]: https://sleepy-kare-d8538d.netlify.app/?path=/story/components-doubleelim--double-elimination
