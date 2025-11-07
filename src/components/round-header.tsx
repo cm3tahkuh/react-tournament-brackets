@@ -38,7 +38,6 @@ export default function RoundHeader({
         y={y + canvasPadding}
         width={width}
         height={roundHeader.height}
-        fill={roundHeader.backgroundColor}
         rx="3"
         ry="3"
       />
@@ -54,17 +53,23 @@ export default function RoundHeader({
         dominantBaseline="middle"
         textAnchor="middle"
       >
-        {!roundHeader.roundTextGenerator &&
-          columnIndex + 1 === numOfRounds &&
-          'Final'}
-        {!roundHeader.roundTextGenerator &&
-          columnIndex + 1 === numOfRounds - 1 &&
-          'Semi-final'}
-        {!roundHeader.roundTextGenerator &&
-          columnIndex + 1 < numOfRounds - 1 &&
-          `Round ${tournamentRoundText}`}
-        {roundHeader.roundTextGenerator &&
-          roundHeader.roundTextGenerator(columnIndex + 1, numOfRounds)}
+        {roundHeader.roundTextGenerator
+          ? roundHeader.roundTextGenerator(columnIndex + 1, numOfRounds)
+          : (() => {
+              if (columnIndex + 1 === numOfRounds) return 'Финал';
+              if (columnIndex + 1 === numOfRounds - 1) return 'Полуфинал';
+              const map: Record<string, string> = {
+                Quarterfinals: 'Четвертьфинал',
+                Quarterfinal: 'Четвертьфинал',
+                'Round of 16': '1/8 финала',
+                'Round of 8': '1/4 финала',
+                'Round of 32': '1/16 финала',
+                Semifinal: 'Полуфинал',
+                Final: 'Финал',
+              };
+              const raw = tournamentRoundText || '';
+              return map[raw] || raw || 'Раунд';
+            })()}
       </Text>
     </g>
   );
