@@ -33,7 +33,6 @@ const Row = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 8px 10px;
-  width: 100%;
   background: ${({ theme }) => (theme as any).finalPlacementsBackground ?? theme.matchBackground.lostColor};
   border-left: 4px solid ${({ theme }) => theme.border.color};
   border-right: 4px solid ${({ theme }) => theme.border.color};
