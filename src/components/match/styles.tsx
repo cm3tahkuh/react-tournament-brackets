@@ -101,7 +101,7 @@ interface LineProps {
 }
 export const Line = styled.div<LineProps>`
   height: 1px;
-  transition: border-color 0.5s ${({ theme }) => theme.smooth};
+  transition: border-color 0.5s ${({ theme }) => theme.transitionTimingFunction};
 
   border-width: 1px;
   border-style: solid;

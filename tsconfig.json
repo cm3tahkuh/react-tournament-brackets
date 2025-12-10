@@ -14,6 +14,7 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "jsx": "react-jsx",
+    "jsxImportSource": "react",
     "declaration": true,
     "esModuleInterop": true,
     "types": ["node", "jest"],

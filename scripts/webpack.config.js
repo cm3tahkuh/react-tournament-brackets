@@ -29,12 +29,7 @@ module.exports = {
       },
       {
         test: /\.(jpg|png|svg|ttf|otf)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-            limit: true,
-          },
-        },
+        type: 'asset/inline',
       },
     ],
   },
@@ -52,8 +47,11 @@ module.exports = {
     path: BUILD_DIR,
     publicPath: '/',
     filename: 'bundle.js',
-    library: '@g-loot/react-tournament-brackets',
-    libraryTarget: 'umd',
+    library: {
+      name: '@cm3tahkuh/react-tournament-brackets',
+      type: 'umd',
+    },
+    globalObject: 'this',
   },
   externals: {
     'styled-components': {

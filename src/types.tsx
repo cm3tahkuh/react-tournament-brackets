@@ -201,7 +201,7 @@ export type CommonTreeProps = {
 };
 
 export type BracketLeaderboardProps = CommonTreeProps & {
-  matchComponent: (props: MatchComponentProps) => JSX.Element;
+  matchComponent: (props: MatchComponentProps) => React.ReactElement;
 
   currentRound?: string;
 

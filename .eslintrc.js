@@ -23,14 +23,18 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   parserOptions: {
-    ecmaVersion: 8,
+    ecmaVersion: 2024,
+    sourceType: 'module',
+    requireConfigFile: false,
+    babelOptions: {
+      presets: ['@babel/preset-react'],
+    },
     ecmaFeatures: {
       jsx: true,
       spread: true,
     },
-    sourceType: 'module',
   },
   globals: {
     JSX: true,
