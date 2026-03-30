@@ -1,5 +1,6 @@
 import React from 'react';
 import { MatchComponentProps } from '../../types';
+import { getLocaleStrings } from '../../i18n/locales';
 import {
   Score,
   Side,
@@ -17,6 +18,7 @@ function Match({
   bottomParty,
   bottomText,
   bottomWon,
+  computedStyles,
   match,
   onMatchClick,
   onMouseEnter,
@@ -27,6 +29,7 @@ function Match({
   topText,
   topWon,
 }: MatchComponentProps) {
+  const t = getLocaleStrings(computedStyles?.locale);
   return (
     <Wrapper>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -38,7 +41,7 @@ function Match({
               onMatchClick?.({ match, topWon, bottomWon, event })
             }
           >
-            <TopText>Детали матча</TopText>
+            <TopText>{t.match.details}</TopText>
           </Anchor>
         )}
       </div>
@@ -46,23 +49,23 @@ function Match({
         <Side
           onMouseEnter={() => onMouseEnter(topParty.id)}
           onMouseLeave={onMouseLeave}
-          won={topWon}
-          hovered={topHovered}
+          $won={topWon}
+          $hovered={topHovered}
           onClick={() => onPartyClick?.(topParty, topWon)}
         >
           <Team>{topParty?.name}</Team>
-          <Score won={topWon}>{topParty?.resultText}</Score>
+          <Score $won={topWon}>{topParty?.resultText}</Score>
         </Side>
-        <Line highlighted={topHovered || bottomHovered} />
+        <Line $highlighted={topHovered || bottomHovered} />
         <Side
           onMouseEnter={() => onMouseEnter(bottomParty.id)}
           onMouseLeave={onMouseLeave}
-          won={bottomWon}
-          hovered={bottomHovered}
+          $won={bottomWon}
+          $hovered={bottomHovered}
           onClick={() => onPartyClick?.(bottomParty, bottomWon)}
         >
           <Team>{bottomParty?.name}</Team>
-          <Score won={bottomWon}>{bottomParty?.resultText}</Score>
+          <Score $won={bottomWon}>{bottomParty?.resultText}</Score>
         </Side>
       </StyledMatch>
       <BottomText>{bottomText ?? ' '}</BottomText>

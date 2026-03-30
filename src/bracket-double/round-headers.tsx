@@ -5,6 +5,7 @@ import { calculatePositionOfMatchLowerBracket } from './calculate-match-position
 
 function RoundHeaders({
   numOfRounds,
+  locale,
   calculatedStyles: {
     canvasPadding,
     columnWidth,
@@ -14,6 +15,7 @@ function RoundHeaders({
   },
 }: {
   numOfRounds: number;
+  locale?: string;
   calculatedStyles: ComputedOptions;
 }) {
   return (
@@ -36,6 +38,7 @@ function RoundHeaders({
                 numOfRounds={numOfRounds}
                 tournamentRoundText={(columnIndex + 1).toString()}
                 columnIndex={columnIndex}
+                locale={locale}
               />
             )}
           </g>

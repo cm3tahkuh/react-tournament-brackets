@@ -64,6 +64,11 @@ module.exports = {
       commonjs2: 'react',
       amd: 'react',
     },
+    'react/jsx-runtime': {
+      commonjs: 'react/jsx-runtime',
+      commonjs2: 'react/jsx-runtime',
+      amd: 'react/jsx-runtime',
+    },
     'react-dom': {
       commonjs: 'react-dom',
       commonjs2: 'react-dom',

@@ -9,6 +9,7 @@ import { getPreviousMatches } from 'Core/match-functions';
 import { Match, SingleElimLeaderboardProps } from '../types';
 import { defaultStyle, getCalculatedStyles } from '../settings';
 import { calculatePositionOfMatch } from './calculate-match-position';
+import { getLocaleStrings } from '../i18n/locales';
 
 import Connectors from './connectors';
 import defaultTheme from '../themes/themes';
@@ -23,16 +24,61 @@ const SingleEliminationBracket = ({
   svgWrapper: SvgWrapper = ({ children }) => <div>{children}</div>,
   theme = defaultTheme,
   options: { style: inputStyle } = {
-    style: defaultStyle,
+    style: {},
   },
   showThirdPlace = false,
   showWinnersColumn = false,
 }: SingleElimLeaderboardProps) => {
+  // Priority: options.style (highest) → theme → defaultStyle (lowest)
+  const locale = (inputStyle as any)?.locale ?? theme.locale ?? 'en';
+  const t = getLocaleStrings(locale);
+
+  // Translate a match name (match.name is used as bottomText under each card).
+  // Handles both English canonical names and already-translated names.
+  const translateMatchName = (name?: string): string => {
+    if (!name) return '';
+    const r = t.roundNames;
+    const directMap: Record<string, string> = {
+      'Grand Final': r.grandFinal,
+      'Final': r.final,
+      'Semifinal': r.semifinal,
+      'Semifinals': r.semifinal,
+      'Quarterfinal': r.quarterfinal,
+      'Quarterfinals': r.quarterfinal,
+      '3rd Place': r.thirdPlace,
+      'Third Place': r.thirdPlace,
+      // idempotent: locale’s own names map to themselves
+      [r.grandFinal]: r.grandFinal,
+      [r.final]: r.final,
+      [r.semifinal]: r.semifinal,
+      [r.quarterfinal]: r.quarterfinal,
+      [r.thirdPlace]: r.thirdPlace,
+    };
+    if (directMap[name]) return directMap[name];
+    // 2. "Round N M" → "${round} N M"  e.g. "Round 1 1" → "Раунд 1 1"
+    const roundNM = name.match(/^(?:Round|Раунд)\s+(\d+)\s+(\d+)$/i);
+    if (roundNM) return `${r.round} ${roundNM[1]} ${roundNM[2]}`;
+    // 3. "Round N" → "${round} N"  e.g. "Round 3" → "Раунд 3"
+    const roundN = name.match(/^(?:Round|Раунд)\s+(\d+)$/i);
+    if (roundN) return `${r.round} ${roundN[1]}`;
+    // 4. "SomeName N" → translate base, keep number
+    const compound = name.match(/^(.+?)\s+(\d+)$/);
+    if (compound && directMap[compound[1]]) return `${directMap[compound[1]]} ${compound[2]}`;
+    return name;
+  };
   const style = {
     ...defaultStyle,
+    ...(theme.connectorColor != null && { connectorColor: theme.connectorColor }),
+    ...(theme.connectorColorHighlight != null && { connectorColorHighlight: theme.connectorColorHighlight }),
+    // Set locale-aware walk-over/no-show text unless caller has explicitly overridden
+    wonBywalkOverText: inputStyle?.wonBywalkOverText ?? t.match.walkOver,
+    lostByNoShowText: inputStyle?.lostByNoShowText ?? t.match.noShow,
     ...inputStyle,
+    locale,
     roundHeader: {
       ...defaultStyle.roundHeader,
+      ...(theme.roundHeader?.backgroundColor != null && { backgroundColor: theme.roundHeader.backgroundColor }),
+      ...(theme.roundHeader?.fontColor != null && { fontColor: theme.roundHeader.fontColor }),
       ...(inputStyle?.roundHeader ?? {}),
     },
     lineInfo: {
@@ -110,9 +156,9 @@ const SingleEliminationBracket = ({
         startAt={startPosition}
       >
         <svg
-          height={gameHeight + extraHeight}
-          width={gameWidth}
           viewBox={`0 0 ${gameWidth} ${gameHeight + extraHeight}`}
+          width={gameWidth}
+          height={gameHeight + extraHeight}
         >
           <MatchContextProvider>
             <g>
@@ -146,6 +192,7 @@ const SingleEliminationBracket = ({
                           numOfRounds={columns.length}
                           tournamentRoundText={match.tournamentRoundText}
                           columnIndex={columnIndex}
+                          locale={locale}
                         />
                       )}
                       {columnIndex !== 0 && (
@@ -178,7 +225,7 @@ const SingleEliminationBracket = ({
                           match={match}
                           previousBottomMatch={previousBottomMatch}
                           topText={match.startTime}
-                          bottomText={match.name}
+                          bottomText={translateMatchName(match.name)}
                           teams={match.participants}
                           onMatchClick={onMatchClick}
                           onPartyClick={onPartyClick}
@@ -218,7 +265,7 @@ const SingleEliminationBracket = ({
                         match={thirdPlaceMatch}
                         previousBottomMatch={null}
                         topText={thirdPlaceMatch.startTime}
-                        bottomText={thirdPlaceMatch.name}
+                        bottomText={translateMatchName(thirdPlaceMatch.name)}
                         teams={thirdPlaceMatch.participants}
                         onMatchClick={onMatchClick}
                         onPartyClick={onPartyClick}
@@ -240,9 +287,9 @@ const SingleEliminationBracket = ({
                   });
                   // Compute placements
                   const finalParticipants = lastGame.participants || [];
-                  const first = finalParticipants.find(p => p.isWinner) || finalParticipants[0] || { name: 'TBD' };
-                  const second = finalParticipants.find(p => !p.isWinner) || finalParticipants[1] || { name: 'TBD' };
-                  const third = thirdPlaceMatch?.participants?.find(p => p.isWinner) || { name: 'TBD' };
+                  const first = finalParticipants.find(p => p.isWinner) || finalParticipants[0] || { name: '' };
+                  const second = finalParticipants.find(p => !p.isWinner) || finalParticipants[1] || { name: '' };
+                  const third = thirdPlaceMatch?.participants?.find(p => p.isWinner) || { name: '' };
                   // Header for winners column like other rounds
                   const headerOffset = roundHeader.isShown
                     ? roundHeader.height + roundHeader.marginBottom
@@ -260,21 +307,22 @@ const SingleEliminationBracket = ({
                           x={x}
                           roundHeader={{
                             ...roundHeader,
-                          roundTextGenerator: () => 'Победители',
+                          roundTextGenerator: () => t.roundNames.winners,
                           }}
                           canvasPadding={canvasPadding}
                           width={width}
                           numOfRounds={columns.length + 1}
-                          tournamentRoundText={'Winners'}
+                          tournamentRoundText={t.roundNames.winners}
                           columnIndex={winnersColumnIndex}
+                          locale={locale}
                         />
                       )}
                       <foreignObject x={x} y={yStart} width={columnWidth} height={totalHeight}>
                         <FinalPlacements
                           placements={[
-                            { label: '1 место', name: first.name ?? 'TBD' },
-                            { label: '2 место', name: second.name ?? 'TBD' },
-                            { label: '3 место', name: third.name ?? 'TBD' },
+                            { label: t.placements.first, name: first.name ?? '' },
+                            { label: t.placements.second, name: second.name ?? '' },
+                            { label: t.placements.third, name: third.name ?? '' },
                           ]}
                           width={columnWidth}
                           itemHeight={itemHeight}

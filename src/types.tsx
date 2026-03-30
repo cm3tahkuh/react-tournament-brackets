@@ -80,6 +80,9 @@ export type Options = {
   wonBywalkOverText?: string;
 
   lostByNoShowText?: string;
+
+  /** UI language. 'en' (default) or 'ru'. Override won/noShow texts automatically. */
+  locale?: string;
 };
 
 export type ComputedOptions = Options & {
@@ -152,6 +155,15 @@ export type Theme = {
 
   disabledColor: string;
 
+  connectorColor?: string;
+
+  connectorColorHighlight?: string;
+
+  roundHeader?: {
+    backgroundColor?: string;
+    fontColor?: string;
+  };
+
   roundHeaders: {
     background: string;
   };
@@ -185,6 +197,9 @@ export type Theme = {
   };
 
   canvasBackground: string;
+
+  /** UI language: 'en' (default) or 'ru'. Translates round headers, placement labels, etc. */
+  locale?: string;
 };
 
 export type CommonTreeProps = {

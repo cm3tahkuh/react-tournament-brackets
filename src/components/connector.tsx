@@ -79,8 +79,8 @@ const Connector = ({
         />
       )}
 
-      {topHighlighted && <use href={`connector-${x}-${y}-${-1}`} />}
-      {bottomHighlighted && <use href={`connector-${x}-${y}-${1}`} />}
+      {topHighlighted && <use href={`#connector-${x}-${y}-${-1}`} />}
+      {bottomHighlighted && <use href={`#connector-${x}-${y}-${1}`} />}
     </>
   );
 };

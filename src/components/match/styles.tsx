@@ -31,7 +31,7 @@ export const StyledMatch = styled.div`
 export const Team = styled.div``;
 
 interface ScoreProps {
-  won?: boolean;
+  $won?: boolean;
 }
 export const Score = styled.div<ScoreProps>`
   display: flex;
@@ -40,14 +40,14 @@ export const Score = styled.div<ScoreProps>`
   align-items: center;
   width: 20%;
   justify-content: center;
-  background: ${({ theme, won }: any) =>
-    won ? theme.score.background.wonColor : theme.score.background.lostColor};
-  color: ${({ theme, won }: any) =>
-    won ? theme.textColor.highlighted : theme.textColor.dark};
+  background: ${({ theme, $won }) =>
+    $won ? theme.score.background.wonColor : theme.score.background.lostColor};
+  color: ${({ theme, $won }) =>
+    $won ? theme.textColor.highlighted : theme.textColor.dark};
 `;
 interface SideProps {
-  won?: boolean;
-  hovered?: boolean;
+  $won?: boolean;
+  $hovered?: boolean;
 }
 export const Side = styled.div<SideProps>`
   display: flex;
@@ -55,8 +55,8 @@ export const Side = styled.div<SideProps>`
   align-items: center;
   justify-content: space-between;
   padding: 0 0 0 1rem;
-  background: ${({ theme, won }: any) =>
-    won ? theme.matchBackground.wonColor : theme.matchBackground.lostColor};
+  background: ${({ theme, $won }) =>
+    $won ? theme.matchBackground.wonColor : theme.matchBackground.lostColor};
 
   :first-of-type {
     border-top-right-radius: 3px;
@@ -75,29 +75,29 @@ export const Side = styled.div<SideProps>`
 
   transition: border-color 0.5s ${({ theme }) => theme.transitionTimingFunction};
   ${Team} {
-    color: ${({ theme, won }: any) =>
-      won ? theme.textColor.highlighted : theme.textColor.dark};
+    color: ${({ theme, $won }) =>
+      $won ? theme.textColor.highlighted : theme.textColor.dark};
   }
   ${Score} {
-    color: ${({ theme, won }: any) =>
-      won ? theme.textColor.highlighted : theme.textColor.dark};
+    color: ${({ theme, $won }) =>
+      $won ? theme.textColor.highlighted : theme.textColor.dark};
   }
-  ${({ hovered, theme, won }: any) =>
-    hovered &&
+  ${({ $hovered, theme, $won }) =>
+    $hovered &&
     css`
       border-color: ${theme.border.highlightedColor};
       ${Team} {
         color: ${theme.textColor.highlighted};
       }
       ${Score} {
-        color: ${won
+        color: ${$won
           ? theme.score.text.highlightedWonColor
           : theme.score.text.highlightedLostColor};
       }
     `}
 `;
 interface LineProps {
-  highlighted?: boolean;
+  $highlighted?: boolean;
 }
 export const Line = styled.div<LineProps>`
   height: 1px;
@@ -105,8 +105,8 @@ export const Line = styled.div<LineProps>`
 
   border-width: 1px;
   border-style: solid;
-  border-color: ${({ highlighted, theme }: any) =>
-    highlighted ? theme.border.highlightedColor : theme.border.color};
+  border-color: ${({ $highlighted, theme }) =>
+    $highlighted ? theme.border.highlightedColor : theme.border.color};
 `;
 
 export const Anchor = styled.a`

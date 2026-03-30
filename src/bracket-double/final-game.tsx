@@ -19,6 +19,7 @@ const FinalGame = ({
   numOfLowerRounds,
   upperBracketHeight,
   lowerBracketHeight,
+  translateMatchName = (n) => n || '',
 }) => {
   const { canvasPadding, columnWidth, rowHeight, roundHeader } =
     calculatedStyles;
@@ -63,7 +64,7 @@ const FinalGame = ({
           match={match}
           previousBottomMatch={bracketSnippet.previousBottomMatch}
           topText={match.startTime}
-          bottomText={match.name}
+          bottomText={translateMatchName(match.name)}
           teams={match.participants}
           onMatchClick={onMatchClick}
           onPartyClick={onPartyClick}

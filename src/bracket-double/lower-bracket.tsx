@@ -13,6 +13,7 @@ const LowerBracket = ({
   onPartyClick,
   matchComponent,
   upperBracketHeight,
+  translateMatchName = (n) => n || '',
 }) => {
   const { canvasPadding, columnWidth, rowHeight, roundHeader } =
     calculatedStyles;
@@ -71,7 +72,7 @@ const LowerBracket = ({
               match={match}
               previousBottomMatch={previousBottomMatch}
               topText={match.startTime}
-              bottomText={match.name}
+              bottomText={translateMatchName(match.name)}
               teams={match.participants}
               onMatchClick={onMatchClick}
               onPartyClick={onPartyClick}

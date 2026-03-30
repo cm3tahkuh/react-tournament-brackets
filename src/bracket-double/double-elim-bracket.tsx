@@ -8,6 +8,7 @@ import { DoubleElimLeaderboardProps, Match } from '../types';
 import { defaultStyle, getCalculatedStyles } from '../settings';
 
 import defaultTheme from '../themes/themes';
+import { getLocaleStrings } from '../i18n/locales';
 
 import UpperBracket from './upper-bracket';
 import LowerBracket from './lower-bracket';
@@ -66,21 +67,57 @@ const DoubleEliminationBracket = ({
   svgWrapper: SvgWrapper = ({ children }) => <div>{children}</div>,
   theme = defaultTheme,
   options: { style: inputStyle } = {
-    style: defaultStyle,
+    style: {},
   },
 }: DoubleElimLeaderboardProps) => {
+  // Priority: options.style (highest) → theme → defaultStyle (lowest)
   const style = {
     ...defaultStyle,
+    ...(theme.connectorColor != null && { connectorColor: theme.connectorColor }),
+    ...(theme.connectorColorHighlight != null && { connectorColorHighlight: theme.connectorColorHighlight }),
     ...inputStyle,
     roundHeader: {
       ...defaultStyle.roundHeader,
-      ...inputStyle.roundHeader,
+      ...(theme.roundHeader?.backgroundColor != null && { backgroundColor: theme.roundHeader.backgroundColor }),
+      ...(theme.roundHeader?.fontColor != null && { fontColor: theme.roundHeader.fontColor }),
+      ...(inputStyle?.roundHeader ?? {}),
     },
     lineInfo: {
       ...defaultStyle.lineInfo,
-      ...inputStyle.lineInfo,
+      ...(inputStyle?.lineInfo ?? {}),
     },
   };
+
+  const locale = (inputStyle as any)?.locale ?? theme.locale ?? 'en';
+  const t = getLocaleStrings(locale);
+
+  // Translate double-elim match names (bottomText)
+  const translateMatchName = (name?: string): string => {
+    if (!name) return '';
+    const r = t.roundNames;
+    const directMap: Record<string, string> = {
+      'Grand Final': r.grandFinal,
+      'Final': r.final,
+      'UB Final': r.ubFinal,
+      'LB Final': r.lbFinal,
+      'UB Semi Final': r.ubSemiFinal,
+      'LB Semi Final': r.lbSemiFinal,
+      [r.grandFinal]: r.grandFinal,
+      [r.ubFinal]: r.ubFinal,
+      [r.lbFinal]: r.lbFinal,
+      [r.ubSemiFinal]: r.ubSemiFinal,
+      [r.lbSemiFinal]: r.lbSemiFinal,
+    };
+    if (directMap[name]) return directMap[name];
+    // "UB 2.1" → "ВС 2.1", "LB 3.1" → "НС 3.1"
+    const ubMatch = name.match(/^UB\s+(.+)$/i);
+    if (ubMatch) return `${r.ubRound} ${ubMatch[1]}`;
+    const lbMatch = name.match(/^LB\s+(.+)$/i);
+    if (lbMatch) return `${r.lbRound} ${lbMatch[1]}`;
+    return name;
+  };
+
+  style.locale = locale;
 
   const calculatedStyles = getCalculatedStyles(style);
 
@@ -167,9 +204,9 @@ const DoubleEliminationBracket = ({
         startAt={startPosition}
       >
         <svg
-          height={gameHeight}
-          width={gameWidth}
           viewBox={`0 0 ${gameWidth} ${gameHeight}`}
+          width={gameWidth}
+          height={gameHeight}
         >
           <MatchContextProvider>
             <g>
@@ -177,6 +214,7 @@ const DoubleEliminationBracket = ({
                 {...{
                   numOfRounds: totalNumOfRounds,
                   calculatedStyles,
+                  locale,
                 }}
               />
               <UpperBracket
@@ -189,6 +227,7 @@ const DoubleEliminationBracket = ({
                   onMatchClick,
                   onPartyClick,
                   matchComponent,
+                  translateMatchName,
                 }}
               />
               <LowerBracket
@@ -201,6 +240,7 @@ const DoubleEliminationBracket = ({
                   onPartyClick,
                   matchComponent,
                   upperBracketHeight: upperBracketDimensions.gameHeight,
+                  translateMatchName,
                 }}
               />
               <FinalGame
@@ -224,6 +264,7 @@ const DoubleEliminationBracket = ({
                   matchComponent,
                   onMatchClick,
                   onPartyClick,
+                  translateMatchName,
                 }}
               />
               {finalsArray?.length > 1 && (
@@ -246,6 +287,7 @@ const DoubleEliminationBracket = ({
                     matchComponent,
                     onMatchClick,
                     onPartyClick,
+                    translateMatchName,
                   }}
                 />
               )}

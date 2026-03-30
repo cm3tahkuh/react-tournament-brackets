@@ -4,6 +4,8 @@ import Match from './src/components/match';
 import { MATCH_STATES } from './src/core/match-states';
 import SVGViewer from './src/svg-viewer';
 import { createTheme } from './src/themes/themes';
+import { generateSingleEliminationBracket, generateDoubleEliminationBracket } from './src/utils/generate-bracket';
+import { getLocaleStrings, locales } from './src/i18n/locales';
 
 export {
   SingleEliminationBracket,
@@ -12,4 +14,10 @@ export {
   MATCH_STATES,
   SVGViewer,
   createTheme,
+  generateSingleEliminationBracket,
+  generateDoubleEliminationBracket,
+  getLocaleStrings,
+  locales,
 };
+
+export type { Locale, LocaleStrings } from './src/i18n/locales';

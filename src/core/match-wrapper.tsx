@@ -63,7 +63,7 @@ function Match({
       [MATCH_STATES.DONE]: '',
       [MATCH_STATES.SCORE_DONE]: '',
       [MATCH_STATES.NO_PARTY]: '',
-    }[matchState] ?? 'TBD';
+    }[matchState] ?? '';
 
   const resultFallback = participant => {
     if (participant.status) {
