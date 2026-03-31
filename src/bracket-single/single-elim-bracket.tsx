@@ -295,7 +295,7 @@ const SingleEliminationBracket = ({
                     ? roundHeader.height + roundHeader.marginBottom
                     : 0;
                   const gap = style.spaceBetweenRows || 0;
-                  const itemHeight = rowHeight - gap; // actual box height like matches
+                  const itemHeight = Math.min(rowHeight - gap, 60); // cap height so placements don't overflow
                   const totalHeight = 3 * itemHeight + 2 * gap;
                   const available = gameHeight + extraHeight - headerOffset;
                   const yStart = Math.max(headerOffset, headerOffset + (available - totalHeight) / 2);
